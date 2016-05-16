@@ -1,2 +1,3 @@
-
-bool type
+class Robot:
+    
+    bool type
