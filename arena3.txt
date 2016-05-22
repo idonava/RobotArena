@@ -1,0 +1,11 @@
+width = 1000
+length = 1000
+black areas : 2
+200,700->420,750
+100,500->220,550
+gray areas : 3
+300,300->450,350
+100,200->160,370
+900,150->920,300
+num of static robots = 20
+num of moving robots = 60
