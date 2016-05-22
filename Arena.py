@@ -14,6 +14,9 @@ class Arena:
         self.matrix=[[0 for x in range(self.X)]for y in range(self.Y)]
         self.movingRob = []
         self.staticRob = []
+        self.numOfStatics = 10
+        self.numOfMoving=50
+
 
     def create_arena_from_file(self,fileName):
         i=0
@@ -53,6 +56,9 @@ class Arena:
                 for y in range(rectangleList[1], rectangleList[3]):
                     self.matrix[x][y] = 1
             rectangleList = []
+        self.numOfStatics = int(lines[i].split('=',1)[1])
+        i=i+1
+        self.numOfMoving = int(lines[i].split('=',1)[1])
 
 
 
