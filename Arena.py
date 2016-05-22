@@ -12,8 +12,8 @@ class Arena:
         self.X = 30
         self.Y = 30
         self.matrix=[[0 for x in range(self.X)]for y in range(self.Y)]
-        self.movingRob =[]
-        self.staticRob = []
+        self.movingRob = [[]]
+        self.staticRob = [[]]
 
     def create_arena(self):
         global white, gray, black
@@ -61,9 +61,9 @@ class Arena:
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
                 r = Robot.Robot(self.numOfRobots+3,isStatic,self.matrix[randX][randY],randX,randY)
-                self.staticRob.append(r)
+                self.staticRob.append([r,randX,randY])
             else:
                 r = Robot.Robot(self.numOfRobots+3, isStatic, self.matrix[randX][randY], 0, 0)
-                self.movingRob.append(r)
+                self.movingRob.append([r,randX,randY])
             self.matrix[randX][randY] = r.id
 

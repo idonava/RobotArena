@@ -18,15 +18,8 @@ class Robot(threading.Thread):
             time.sleep(0.1)
 
     def move(self):
-            return int(random.random()*4)
-            if (direction==0):    #step right
-                self.X=self.X+1
-            if (direction == 1):  # step left
-                self.X = self.X - 1
-            if (direction == 2):  # step up
-                self.Y = self.Y + 1
-            if (direction == 3):  # step down
-                self.Y = self.Y - 1
+        return int(random.random()*4)
+
 
 
 
