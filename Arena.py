@@ -60,11 +60,8 @@ class Arena:
         i=i+1
         self.numOfMoving = int(lines[i].split('=',1)[1])
 
-
-
-
-
     def create_boundaries(self):
+        self.matrix = [[0 for x in range(self.X)] for y in range(self.Y)]
         for x in range(self.X):
             self.matrix[x][self.Y - 1] = 2
             self.matrix[x][0] = 2
