@@ -30,30 +30,30 @@ class Arena:
         numOfBlack = int(lines[i].split(':', 1)[1])
         i=i+1
         rectangleList=[]
-        for x in range(numOfBlack+1):
+        for x in range(numOfBlack):
             list1=lines[i].split('->')
             i=i+1
             for num in list1:
                 list2=num.split(',')
                 rectangleList.append(int(list2[0]))
                 rectangleList.append(int(list2[1]))
-            for x in range(rectangleList[0],rectangleList[2]):
-                for y in range(rectangleList[1],rectangleList[3]):
+            for x in range(rectangleList[0],rectangleList[2]+1):
+                for y in range(rectangleList[1],rectangleList[3]+1):
                     self.matrix[x][y] = 2
             rectangleList = []
 
         numOfGray = int(lines[i].split(':', 1)[1])
         i = i + 1
         rectangleList = []
-        for x in range(numOfGray+1):
+        for x in range(numOfGray):
             list1 = lines[i].split('->')
             i = i + 1
             for num in list1:
                 list2 = num.split(',')
                 rectangleList.append(int(list2[0]))
                 rectangleList.append(int(list2[1]))
-            for x in range(rectangleList[0], rectangleList[2]):
-                for y in range(rectangleList[1], rectangleList[3]):
+            for x in range(rectangleList[0], rectangleList[2]+1):
+                for y in range(rectangleList[1], rectangleList[3]+1):
                     self.matrix[x][y] = 1
             rectangleList = []
         self.numOfStatics = int(lines[i].split('=',1)[1])
