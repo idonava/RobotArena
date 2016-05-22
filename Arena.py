@@ -9,11 +9,11 @@ class Arena:
         global white, gray, black
         self.numOfRobots=0
         self.id = id
-        self.X = 30
-        self.Y = 30
+        self.X = 10
+        self.Y = 10
         self.matrix=[[0 for x in range(self.X)]for y in range(self.Y)]
-        self.movingRob = [[]]
-        self.staticRob = [[]]
+        self.movingRob = []
+        self.staticRob = []
 
     def create_arena(self):
         global white, gray, black
