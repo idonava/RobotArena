@@ -1,7 +1,9 @@
 width = 10
 length = 10
-black areas : 0
-gray areas : 0
+black areas : 1
+1,1->3,3
+gray areas : 1
+4,4->5,5
 num of static robots = 2
 num of moving robots = 5
 

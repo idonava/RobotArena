@@ -30,7 +30,7 @@ class Arena:
         numOfBlack = int(lines[i].split(':', 1)[1])
         i=i+1
         rectangleList=[]
-        for x in range(numOfBlack):
+        for x in range(numOfBlack+1):
             list1=lines[i].split('->')
             i=i+1
             for num in list1:
@@ -45,7 +45,7 @@ class Arena:
         numOfGray = int(lines[i].split(':', 1)[1])
         i = i + 1
         rectangleList = []
-        for x in range(numOfGray):
+        for x in range(numOfGray+1):
             list1 = lines[i].split('->')
             i = i + 1
             for num in list1:
