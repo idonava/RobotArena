@@ -2,6 +2,9 @@ import random
 import Robot
 import matplotlib.pyplot as plt
 import copy
+import Tkinter as tk
+import time
+
 
 import numpy as np
 
@@ -13,14 +16,17 @@ class Arena:
         global white, gray, black
         self.numOfRobots=0
         self.id = id
-        self.X = 10
-        self.Y = 10
+        self.X = 1000
+        self.Y = 1000
         self.matrix=[[0 for x in range(self.X)]for y in range(self.Y)]
         self.movingRob = []
         self.staticRob = []
         self.numOfStatics = 10
         self.numOfMoving=50
         self.matrixWithoutRobots=[]
+        self.root = tk.Tk()
+        self.canvas = tk.Canvas(self.root, width=1000, height=1000)
+        self.canvas.pack()
 
     def create_arena_from_file(self,fileName):
         i=0
@@ -45,7 +51,6 @@ class Arena:
                 for y in range(rectangleList[1],rectangleList[3]+1):
                     self.matrix[x][y] = 2
             rectangleList = []
-
         numOfGray = int(lines[i].split(':', 1)[1])
         i = i + 1
         rectangleList = []
@@ -74,6 +79,9 @@ class Arena:
         for y in range(self.Y):
             self.matrix[self.X - 1][y] = 2
             self.matrix[0][y] = 2
+        self.canvas.create_rectangle(0,0,1000,1, fill='black')
+        self.canvas.create_rectangle(0,0,1,1000, fill='black')
+
 
     def create_random_arena(self):
         self.create_boundaries()
@@ -84,9 +92,11 @@ class Arena:
             rand3 = (random.random() * (self.Y - 1)) + 1
             rand4 = (random.random() * (self.Y - 1)) + 1
 
+            self.canvas.create_rectangle(int(min(rand1, rand2)), int(min(rand3, rand4)), int(max(rand1, rand2)),int(max(rand3, rand4)),fill='gray')
             for x in range(int(min(rand1, rand2)), int(max(rand1, rand2))):
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
                     self.matrix[x][y] = 1
+
 
         # create black areas:
         for x in range(1):
@@ -95,6 +105,7 @@ class Arena:
             rand3 = (random.random() * (self.Y - 1)) + 1
             rand4 = (random.random() * (self.Y - 1)) + 1
 
+            self.canvas.create_rectangle(int(min(rand1, rand2)), int(min(rand3, rand4)), int(max(rand1, rand2)),int(max(rand3, rand4)),fill='gray')
             for x in range(int(min(rand1, rand2)),int(max(rand1, rand2))):
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
                     self.matrix[x][y] = 2
@@ -119,6 +130,7 @@ class Arena:
                 r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0)
                 self.movingRob.append([r,randX,randY])
             self.matrix[randX][randY] = r.id
+
     def getColor(self,x,y):
         n= self.matrixWithoutRobots[x][y]
         print(n)
@@ -126,35 +138,33 @@ class Arena:
             return 'white'
         else:
             return 'gray'
-    def gui(self):
-        Matrix = [[0 for x in range(10)] for y in range(10)]
 
-        fig, ax = plt.subplots(figsize=(5, 5))
+    def gui(self):
+        Matrix = [[0 for x in range(self.X)] for y in range(self.Y)]
+
+        fig, ax = plt.subplots(figsize=(10, 10))
+        for rob in self.staticRob:
+            plt.plot(rob[1], rob[2], color='green', linestyle='dashed', marker='o',
+                     markerfacecolor='red', markersize=12)
+        for rob in self.movingRob:
+            plt.plot(rob[1], rob[2], color='green', linestyle='dashed', marker='o',
+                     markerfacecolor='green', markersize=12)
        # ax.imshow(Matrix, cmap='RdGy', interpolation='nearest')
        # plt.plot(1, 2, 'o','g')
-        for x in range (self.X):
-            for y in range (self.Y):
-                if self.matrix[x][y]==0:
-                    plt.scatter(x, y, s=700, marker='s', edgecolor='white', linewidth='3', facecolor='white', hatch='|')
-                elif self.matrix[x][y]==1:
-                    plt.scatter(x, y, s=700, marker='s', edgecolor='gray', linewidth='3', facecolor='gray', hatch='|')
 
-                elif self.matrix[x][y]==2:
-                    plt.scatter(x, y, s=700, marker='s', edgecolor='black', linewidth='3', facecolor='black', hatch='|')
-
-                elif self.matrix[x][y] <=2+self.staticRob.__len__() :
-                    plt.plot(x, y, color='green', linestyle='dashed', marker='o',
-                             markerfacecolor='red', markersize=12)
-                    color = self.getColor(x,y)
-                    plt.scatter(x, y, s=700, marker='s', edgecolor=color, linewidth='3', facecolor=color, hatch='|')
-
-                else:
-                    color = self.getColor(x,y)
-                    plt.scatter(x, y, s=700, marker='s', edgecolor=color, linewidth='3', facecolor=color, hatch='|')
-
-                    plt.plot(x, y, color='green', linestyle='dashed', marker='o',
-                             markerfacecolor='green', markersize=12)
-
-        ax.imshow(Matrix, cmap='RdGy', interpolation='nearest')
-
+        ax.imshow(self.matrix, cmap='RdGy', interpolation='nearest')
         plt.show()
+
+        # canvas.create_rectangle(x0, y0, x1, y1, option, ... )
+        # x0, y0, x1, y1 are corner coordinates of ulc to lrc diagonal
+        for rob in self.staticRob:
+            self.canvas.create_rectangle(rob[1], rob[2],rob[1]+10,rob[2]+10, outline='white', fill='red')
+        for rob in self.movingRob:
+            self.canvas.create_rectangle(rob[1],rob[2],rob[1]+10, rob[2]+10, outline='white', fill='green')
+        for x in range(50):
+            y = x = 5
+            time.sleep(0.025)
+            #canvas.move(rc1, x, -y)
+            #canvas.move(rc2, x, y)
+            self.canvas.update()
+        self.root.mainloop()

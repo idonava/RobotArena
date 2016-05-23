@@ -1,8 +1,6 @@
 import random
-
 import time
 import Battery
-
 
 class Robot():
 
@@ -10,10 +8,18 @@ class Robot():
 
         self.id = id
         self.isStatic = isStatic
-        self.X=X
-        self.Y=Y
-        self.color=color
-        self.Battery=Battery.Battery()
+        self.X = X
+        self.Y = Y
+        self.color = color
+        self.Battery = Battery.Battery()
+        self.sendMessage = False
+        self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
+
+    def send_message(self):
+        self.sendMessage = True
+
+    def get_message(self,msg):
+        self.gottenMsg=msg
 
     def run(self):
         while(True):
