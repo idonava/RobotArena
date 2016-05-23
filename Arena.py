@@ -130,6 +130,7 @@ class Arena:
         for x in range(self.X):
             print (mat[x])
 
+
         fig, ax = plt.subplots()
         ax.imshow(mat, cmap='RdGy', interpolation='nearest')
         ax.imshow.
