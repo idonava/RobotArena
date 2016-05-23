@@ -1,6 +1,8 @@
 import random
 import Robot
 import matplotlib.pyplot as plt
+import copy
+
 import numpy as np
 
 class Arena:
@@ -18,7 +20,7 @@ class Arena:
         self.staticRob = []
         self.numOfStatics = 10
         self.numOfMoving=50
-
+        self.matrixWithoutRobots=[]
 
     def create_arena_from_file(self,fileName):
         i=0
@@ -61,6 +63,8 @@ class Arena:
         self.numOfStatics = int(lines[i].split('=',1)[1])
         i=i+1
         self.numOfMoving = int(lines[i].split('=',1)[1])
+        self.matrixWithoutRobots=copy.deepcopy(self.matrix)
+
 
     def create_boundaries(self):
         self.matrix = [[0 for x in range(self.X)] for y in range(self.Y)]
@@ -94,7 +98,7 @@ class Arena:
             for x in range(int(min(rand1, rand2)),int(max(rand1, rand2))):
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
                     self.matrix[x][y] = 2
-
+        self.matrixWithoutRobots=copy.deepcopy(self.matrix)
 
     def print_arena(self):
         for x in range(self.X):
@@ -115,23 +119,42 @@ class Arena:
                 r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0)
                 self.movingRob.append([r,randX,randY])
             self.matrix[randX][randY] = r.id
-
+    def getColor(self,x,y):
+        n= self.matrixWithoutRobots[x][y]
+        print(n)
+        if n==0:
+            return 'white'
+        else:
+            return 'gray'
     def gui(self):
-        mat = self.matrix
+        Matrix = [[0 for x in range(10)] for y in range(10)]
 
+        fig, ax = plt.subplots(figsize=(5, 5))
+       # ax.imshow(Matrix, cmap='RdGy', interpolation='nearest')
+       # plt.plot(1, 2, 'o','g')
         for x in range (self.X):
             for y in range (self.Y):
-                if mat[x][y] >2 :
-                   if(mat[x][y]<=2+self.staticRob.__len__()):
-                       mat[x][y] =3
-                   else:
-                        mat[x][y] =4
-        print(self.staticRob.__len__())
-        for x in range(self.X):
-            print (mat[x])
+                if self.matrix[x][y]==0:
+                    plt.scatter(x, y, s=700, marker='s', edgecolor='white', linewidth='3', facecolor='white', hatch='|')
+                elif self.matrix[x][y]==1:
+                    plt.scatter(x, y, s=700, marker='s', edgecolor='gray', linewidth='3', facecolor='gray', hatch='|')
 
+                elif self.matrix[x][y]==2:
+                    plt.scatter(x, y, s=700, marker='s', edgecolor='black', linewidth='3', facecolor='black', hatch='|')
 
-        fig, ax = plt.subplots()
-        ax.imshow(mat, cmap='RdGy', interpolation='nearest')
-        ax.imshow.
+                elif self.matrix[x][y] <=2+self.staticRob.__len__() :
+                    plt.plot(x, y, color='green', linestyle='dashed', marker='o',
+                             markerfacecolor='red', markersize=12)
+                    color = self.getColor(x,y)
+                    plt.scatter(x, y, s=700, marker='s', edgecolor=color, linewidth='3', facecolor=color, hatch='|')
+
+                else:
+                    color = self.getColor(x,y)
+                    plt.scatter(x, y, s=700, marker='s', edgecolor=color, linewidth='3', facecolor=color, hatch='|')
+
+                    plt.plot(x, y, color='green', linestyle='dashed', marker='o',
+                             markerfacecolor='green', markersize=12)
+
+        ax.imshow(Matrix, cmap='RdGy', interpolation='nearest')
+
         plt.show()
