@@ -1,5 +1,4 @@
 import Arena
-import thread
 
 def main():
     a = Arena.Arena()
@@ -7,10 +6,11 @@ def main():
     a.create_robots(a.numOfStatics, True)
     a.create_robots(a.numOfMoving, False)
     a.print_arena()
+    a.gui()
     moveRobot(a)
     print("hello")
     a.print_arena()
-
+    print(a.movingRob)
 
 def moveRobot(arena):
     for robot in arena.movingRob:

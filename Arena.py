@@ -1,5 +1,7 @@
 import random
 import Robot
+import matplotlib.pyplot as plt
+import numpy as np
 
 class Arena:
 
@@ -107,10 +109,28 @@ class Arena:
                 randX = int((random.random() * (self.X - 1)) + 1)
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
-                r = Robot.Robot(self.numOfRobots+3,isStatic,self.matrix[randX][randY],randX,randY)
+                r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY)
                 self.staticRob.append([r,randX,randY])
             else:
-                r = Robot.Robot(self.numOfRobots+3, isStatic, self.matrix[randX][randY], 0, 0)
+                r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0)
                 self.movingRob.append([r,randX,randY])
             self.matrix[randX][randY] = r.id
 
+    def gui(self):
+        mat = self.matrix
+
+        for x in range (self.X):
+            for y in range (self.Y):
+                if mat[x][y] >2 :
+                   if(mat[x][y]<=2+self.staticRob.__len__()):
+                       mat[x][y] =3
+                   else:
+                        mat[x][y] =4
+        print(self.staticRob.__len__())
+        for x in range(self.X):
+            print (mat[x])
+
+        fig, ax = plt.subplots()
+        ax.imshow(mat, cmap='RdGy', interpolation='nearest')
+        ax.imshow.
+        plt.show()
