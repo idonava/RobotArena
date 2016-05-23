@@ -1,12 +1,13 @@
 import random
-import threading
+
 import time
 import Battery
 
-class Robot(threading.Thread):
+
+class Robot():
 
     def __init__(self, id, isStatic,color,X,Y):
-        threading.Thread.__init__(self)
+
         self.id = id
         self.isStatic = isStatic
         self.X=X

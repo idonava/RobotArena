@@ -1,11 +1,23 @@
 import Arena
-import thread
+import Message
 
 def main():
     a = Arena.Arena()
     a.create_arena_from_file("arena4.txt")
     a.create_robots(a.numOfStatics, True)
     a.create_robots(a.numOfMoving, False)
+    a.print_arena()
+    moveRobot(a)
+    print("hello")
+    a.print_arena()
+    moveRobot(a)
+    print("hello")
+    a.print_arena()
+    moveRobot(a)
+    print("hello")
+    a.print_arena()
+    moveRobot(a)
+    print("hello")
     a.print_arena()
     moveRobot(a)
     print("hello")
