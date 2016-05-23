@@ -1,12 +1,9 @@
 import random
 import Robot
-import matplotlib.pyplot as plt
 import copy
 import Tkinter as tk
 import time
 
-
-import numpy as np
 
 class Arena:
 
@@ -23,10 +20,10 @@ class Arena:
         self.staticRob = []
         self.numOfStatics = 10
         self.numOfMoving=50
-        self.matrixWithoutRobots=[]
         self.root = tk.Tk()
         self.canvas = tk.Canvas(self.root, width=1000, height=1000)
         self.canvas.pack()
+        self.recRob=[]
 
     def create_arena_from_file(self,fileName):
         i=0
@@ -47,6 +44,7 @@ class Arena:
                 list2=num.split(',')
                 rectangleList.append(int(list2[0]))
                 rectangleList.append(int(list2[1]))
+            self.canvas.create_rectangle(rectangleList[0],rectangleList[1],rectangleList[2],rectangleList[3], fill='black')
             for x in range(rectangleList[0],rectangleList[2]+1):
                 for y in range(rectangleList[1],rectangleList[3]+1):
                     self.matrix[x][y] = 2
@@ -61,6 +59,7 @@ class Arena:
                 list2 = num.split(',')
                 rectangleList.append(int(list2[0]))
                 rectangleList.append(int(list2[1]))
+            self.canvas.create_rectangle(rectangleList[0], rectangleList[1], rectangleList[2], rectangleList[3], fill='gray')
             for x in range(rectangleList[0], rectangleList[2]+1):
                 for y in range(rectangleList[1], rectangleList[3]+1):
                     self.matrix[x][y] = 1
@@ -79,8 +78,6 @@ class Arena:
         for y in range(self.Y):
             self.matrix[self.X - 1][y] = 2
             self.matrix[0][y] = 2
-        self.canvas.create_rectangle(0,0,1000,1, fill='black')
-        self.canvas.create_rectangle(0,0,1,1000, fill='black')
 
 
     def create_random_arena(self):
@@ -105,11 +102,10 @@ class Arena:
             rand3 = (random.random() * (self.Y - 1)) + 1
             rand4 = (random.random() * (self.Y - 1)) + 1
 
-            self.canvas.create_rectangle(int(min(rand1, rand2)), int(min(rand3, rand4)), int(max(rand1, rand2)),int(max(rand3, rand4)),fill='gray')
+            self.canvas.create_rectangle(int(min(rand1, rand2)), int(min(rand3, rand4)), int(max(rand1, rand2)),int(max(rand3, rand4)),fill='black')
             for x in range(int(min(rand1, rand2)),int(max(rand1, rand2))):
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
                     self.matrix[x][y] = 2
-        self.matrixWithoutRobots=copy.deepcopy(self.matrix)
 
     def print_arena(self):
         for x in range(self.X):
@@ -126,45 +122,12 @@ class Arena:
             if(isStatic):
                 r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY)
                 self.staticRob.append([r,randX,randY])
+                self.canvas.create_rectangle(randX, randY, randX + 10, randY + 10, fill='red')
             else:
                 r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0)
                 self.movingRob.append([r,randX,randY])
+                self.recRob.append(self.canvas.create_rectangle(randX, randY, randX + 10, randY + 10, fill='green'))
             self.matrix[randX][randY] = r.id
 
-    def getColor(self,x,y):
-        n= self.matrixWithoutRobots[x][y]
-        print(n)
-        if n==0:
-            return 'white'
-        else:
-            return 'gray'
 
-    def gui(self):
-        Matrix = [[0 for x in range(self.X)] for y in range(self.Y)]
 
-        fig, ax = plt.subplots(figsize=(10, 10))
-        for rob in self.staticRob:
-            plt.plot(rob[1], rob[2], color='green', linestyle='dashed', marker='o',
-                     markerfacecolor='red', markersize=12)
-        for rob in self.movingRob:
-            plt.plot(rob[1], rob[2], color='green', linestyle='dashed', marker='o',
-                     markerfacecolor='green', markersize=12)
-       # ax.imshow(Matrix, cmap='RdGy', interpolation='nearest')
-       # plt.plot(1, 2, 'o','g')
-
-        ax.imshow(self.matrix, cmap='RdGy', interpolation='nearest')
-        plt.show()
-
-        # canvas.create_rectangle(x0, y0, x1, y1, option, ... )
-        # x0, y0, x1, y1 are corner coordinates of ulc to lrc diagonal
-        for rob in self.staticRob:
-            self.canvas.create_rectangle(rob[1], rob[2],rob[1]+10,rob[2]+10, outline='white', fill='red')
-        for rob in self.movingRob:
-            self.canvas.create_rectangle(rob[1],rob[2],rob[1]+10, rob[2]+10, outline='white', fill='green')
-        for x in range(50):
-            y = x = 5
-            time.sleep(0.025)
-            #canvas.move(rc1, x, -y)
-            #canvas.move(rc2, x, y)
-            self.canvas.update()
-        self.root.mainloop()
