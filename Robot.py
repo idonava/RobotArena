@@ -1,11 +1,11 @@
 import random
 import time
 import Battery
+import Guess
 
 class Robot():
 
     def __init__(self, id, isStatic,color,X,Y):
-
         self.id = id
         self.isStatic = isStatic
         self.X = X
@@ -15,12 +15,18 @@ class Robot():
         self.sendMessage = False
         self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
         self.allMessages = []
+        self.guess = Guess.Guess(self.allMessages)
+
 
     def send_message(self):
         self.sendMessage = True
 
     def get_message(self):
         self.sendMessage = False
+
+        if(len(self.allMessages)>0):
+            self.guess = Guess.Guess(self.allMessages)
+            self.guess.guessTest()
 
     def run(self):
         while(True):

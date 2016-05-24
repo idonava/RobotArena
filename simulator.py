@@ -51,22 +51,24 @@ def moveRobot(arena):
                     arena.canvas.update()
         changeSend(arena)
         time.sleep(0.01)
-        print(arena.movingRob[0][0].allMessages)
+        print(arena.movingRob[0][1],arena.movingRob[0][2])
+
+        print(arena.movingRob[5][0].guess.guess)
 
 def changeSend(arena):
         #Need to add sleep time to robots
         for rob in arena.staticRob:
             rand =int(random.random()*2)
             if (rand ==0):
-                rob[0].sendMessage=False
+                rob[0].get_message()
             else:
-                rob[0].sendMessage = True
+                rob[0].send_message()
         for rob in arena.movingRob:
             rand =int(random.random()*2)
             if (rand ==0):
-                rob[0].sendMessage=False
+                rob[0].get_message()
             else:
-                rob[0].sendMessage = True
+                rob[0].send_message()
         checkMessages(arena)
 
 def checkMessages(arena):
