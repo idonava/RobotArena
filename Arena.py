@@ -121,12 +121,13 @@ class Arena:
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
                 r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY)
-                self.staticRob.append([r,randX,randY])
-                self.canvas.create_rectangle(randX, randY, randX + 10, randY + 10, fill='red')
+                rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='red')
+                self.staticRob.append([r,randX,randY,rect])
+
             else:
                 r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0)
-                self.movingRob.append([r,randX,randY])
-                self.recRob.append(self.canvas.create_rectangle(randX, randY, randX + 10, randY + 10, fill='green'))
+                rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='green')
+                self.movingRob.append([r,randX,randY,rect])
             self.matrix[randX][randY] = r.id
 
 
