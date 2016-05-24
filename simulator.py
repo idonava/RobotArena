@@ -52,6 +52,7 @@ def moveRobot(arena):
         changeSend(arena)
         time.sleep(0.01)
         print(arena.movingRob[0][0].allMessages)
+
 def changeSend(arena):
         #Need to add sleep time to robots
         for rob in arena.staticRob:
