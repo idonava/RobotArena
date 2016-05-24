@@ -14,12 +14,13 @@ class Robot():
         self.Battery = Battery.Battery()
         self.sendMessage = False
         self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
+        self.allMessages = []
 
     def send_message(self):
         self.sendMessage = True
 
-    def get_message(self,msg):
-        self.gottenMsg=msg
+    def get_message(self):
+        self.sendMessage = False
 
     def run(self):
         while(True):

@@ -1,6 +1,7 @@
 import time
-
+import math
 import Arena
+import random
 
 def main():
     a = Arena.Arena()
@@ -9,7 +10,6 @@ def main():
     a.create_robots(a.numOfStatics, True)
     a.create_robots(a.numOfMoving, False)
     moveRobot(a)
-
     a.root.mainloop()
 
 
@@ -49,9 +49,53 @@ def moveRobot(arena):
                     robot[0].Y -= 1
                     arena.canvas.move(robot[3], 0, -1)
                     arena.canvas.update()
-        time.sleep(0.25)
+        changeSend(arena)
+        time.sleep(0.01)
+        print(arena.movingRob[0][0].allMessages)
+def changeSend(arena):
+        #Need to add sleep time to robots
+        for rob in arena.staticRob:
+            rand =int(random.random()*2)
+            if (rand ==0):
+                rob[0].sendMessage=False
+            else:
+                rob[0].sendMessage = True
+        for rob in arena.movingRob:
+            rand =int(random.random()*2)
+            if (rand ==0):
+                rob[0].sendMessage=False
+            else:
+                rob[0].sendMessage = True
+        checkMessages(arena)
 
+def checkMessages(arena):
+    sendRobots = []
+    reciveRobots = []
+    for rob in arena.staticRob:
+        if rob[0].sendMessage:
+            sendRobots.append(rob)
+        else:
+            reciveRobots.append(rob)
 
+    for rob in arena.movingRob:
+        if rob[0].sendMessage:
+            sendRobots.append(rob)
+        else:
+            reciveRobots.append(rob)
+
+    for reciveRobot in reciveRobots:
+        minRobot = sendRobots[0]
+        minDis = getDistance(reciveRobot[0],minRobot[0])
+        for sendRobot in sendRobots:
+            dis = getDistance(reciveRobot[0],sendRobot[0])
+            if dis<minDis:
+                minRobot=sendRobot
+                minDis = dis
+        if (dis<500):
+            reciveRobot[0].allMessages.append([minRobot[0].message,dis])
+
+def getDistance(reciveRobot,sendRobot):
+    return math.sqrt(math.pow(reciveRobot.X-sendRobot.X,2)+ math.pow(reciveRobot.Y-sendRobot.Y,2))
 
 if __name__ == "__main__":
     main()
