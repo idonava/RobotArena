@@ -39,7 +39,7 @@ class Arena:
         self.vbar.config(command=self.canvas.yview)
 
     def addMenus(self):
-        for i in range(100):
+        for i in range(11):
             x = (i * 100)
             self.canvas.create_line(x, 10, x, 0, width=2)
             self.canvas.create_text(x, 20, text='%d' % (100 * i), anchor="n")
