@@ -3,7 +3,7 @@ import Robot
 import copy
 import Tkinter as tk
 import simulator
-
+from PIL import Image,ImageDraw,ImageTk,ImageGrab
 import time
 
 
@@ -24,7 +24,7 @@ class Arena:
         self.numOfMoving=50
 
         self.root = tk.Tk()
-        self.canvas = tk.Canvas(self.root, width=1000, height=1000,scrollregion=(0, 0, 1000, 1000))
+        self.canvas = tk.Canvas(self.root, width=1000, height=1000,scrollregion=(0, 0, 1050, 1050))
         for i in range(1000):
             x = (i * 100)
             self.canvas.create_line(x, 10, x, 0, width=2)
@@ -40,7 +40,6 @@ class Arena:
         print(2)
         self.men.add_command(label="Pause",command=self.pauseMoving)
         print(3)
-        self.men.add_command(label="Save",command=self.createPNG())
         self.MenuBar.add_cascade(label="Test",menu=self.men)
         #self.button = tk.Button(self.root, text="next step", command=self.save).place(x=20, y=20)
         self.recRob=[]
@@ -50,13 +49,14 @@ class Arena:
         self.root.config(menu=self.MenuBar)
         self.canvas.pack(side='left', expand='True', fill='both')
         self.isMoving=False
-        self.canvas.pack()
+
+
         self.root.state('zoomed')
 
 
 
-    def createPNG(self):
-        self.canvas.postscript(file="file_name.png", colormode='color')
+
+
 
     def startMoving(self):
         self.isMoving = True
