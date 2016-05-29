@@ -5,5 +5,5 @@ black areas : 1
 gray areas : 1
 1,1->3,3
 num of static robots = 2
-num of moving robots = 5
+num of moving robots = 1
 

@@ -7,6 +7,6 @@ gray areas : 3
 100,100->300,300
 700,400->800,600
 600,100->700,200
-num of static robots = 5
-num of moving robots = 50
+num of static robots = 500
+num of moving robots = 100
 

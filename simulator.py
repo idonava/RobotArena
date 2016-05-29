@@ -9,12 +9,12 @@ def main():
     a.create_arena_from_file("arena1.txt")
     a.create_robots(a.numOfStatics, True)
     a.create_robots(a.numOfMoving, False)
-    #moveRobot(a)
+    moveRobot(a)
     a.root.mainloop()
 
 
 def moveRobot(arena):
-    while(arena.isMoving):
+    while(True):
         for robot in arena.movingRob:
             direction = robot[0].move()
             if (direction == 0):  # step right
@@ -52,8 +52,10 @@ def moveRobot(arena):
         changeSend(arena)
         time.sleep(0.01)
         print(arena.movingRob[0][1],arena.movingRob[0][2])
+        print(arena.movingRob[0][0].guess)
+        for index in arena.movingRob[0][0].indexOfNeighbors:
+            print(arena.movingRob[0][0].allMessages[index])
 
-        print(arena.movingRob[5][0].guess.guess)
 
 def changeSend(arena):
         #Need to add sleep time to robots
@@ -88,17 +90,28 @@ def checkMessages(arena):
 
     for reciveRobot in reciveRobots:
         minRobot = sendRobots[0]
-        minDis = getDistance(reciveRobot[0],minRobot[0])
+        minDis = getDistance(reciveRobot,minRobot)
         for sendRobot in sendRobots:
-            dis = getDistance(reciveRobot[0],sendRobot[0])
+            dis = getDistance(reciveRobot,sendRobot)
             if dis<minDis:
                 minRobot=sendRobot
                 minDis = dis
-        if (dis<500):
-            reciveRobot[0].allMessages.append([minRobot[0].message,dis])
+        if (minDis<500):
+            reciveRobot[0].allMessages[minRobot[0].id]=([minRobot[0].message,minDis])
+            if(minRobot[0].id not in reciveRobot[0].indexOfNeighbors):
+                reciveRobot[0].indexOfNeighbors.append(minRobot[0].id)
+            reciveRobot[0].makeGuess()
 
 def getDistance(reciveRobot,sendRobot):
-    return math.sqrt(math.pow(reciveRobot.X-sendRobot.X,2)+ math.pow(reciveRobot.Y-sendRobot.Y,2))
+    r1 = reciveRobot[1]
+    r2 = sendRobot[1]
+    r3 = reciveRobot[2]
+    r4 = sendRobot[2]
+    #print("r1: ",r1," r2 ", r2, " r3 ", r3, " r4 ",r4)
+    dis = math.sqrt(math.pow(r1-r2,2)+ math.pow(r3-r4,2))
+    #print ("dis ",dis)
+    rand = random.uniform(0.8,1.2)
+    return dis*rand
 
 if __name__ == "__main__":
     main()

@@ -3,8 +3,6 @@ import Robot
 import copy
 import Tkinter as tk
 import simulator
-from PIL import Image,ImageDraw,ImageTk,ImageGrab
-import time
 
 
 class Arena:
@@ -58,14 +56,15 @@ class Arena:
 
 
 
+
     def startMoving(self):
         self.isMoving = True
         print(self.isMoving)
         simulator.moveRobot(self)
+
     def pauseMoving(self):
         self.isMoving = False
         print(self.isMoving)
-
 
     def create_arena_from_file(self,fileName):
         i=0
@@ -111,7 +110,6 @@ class Arena:
         self.numOfMoving = int(lines[i].split('=',1)[1])
         self.matrixWithoutRobots=copy.deepcopy(self.matrix)
 
-
     def create_boundaries(self):
         self.matrix = [[0 for x in range(self.X)] for y in range(self.Y)]
         for x in range(self.X):
@@ -120,7 +118,6 @@ class Arena:
         for y in range(self.Y):
             self.matrix[self.X - 1][y] = 2
             self.matrix[0][y] = 2
-
 
     def create_random_arena(self):
         self.create_boundaries()
@@ -162,12 +159,12 @@ class Arena:
                 randX = int((random.random() * (self.X - 1)) + 1)
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
-                r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY)
+                r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY, self.numOfMoving+self.numOfStatics)
                 rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='red')
                 self.staticRob.append([r,randX,randY,rect])
 
             else:
-                r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0)
+                r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0,self.numOfMoving+self.numOfStatics)
                 rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='green')
                 self.movingRob.append([r,randX,randY,rect])
             self.matrix[randX][randY] = r.id
