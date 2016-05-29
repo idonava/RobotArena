@@ -69,7 +69,7 @@ class Arena:
                 robot = rob
                 break
         string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\n\nGuess position: "+str(robot[0].X)+" "+str(robot[0].Y) +"\n\nBatery: "+str(robot[0].Battery.bat)+ "%"
-        tkMessageBox.showinfo("Say Hello",string )
+        tkMessageBox.showinfo("Robot information",string )
 
         print(event.widget.find_closest(event.x, event.y))
 
