@@ -9,12 +9,12 @@ def main():
     a.create_arena_from_file("arena1.txt")
     a.create_robots(a.numOfStatics, True)
     a.create_robots(a.numOfMoving, False)
-    moveRobot(a)
+    #moveRobot(a)
     a.root.mainloop()
 
 
 def moveRobot(arena):
-    while(True):
+    while(arena.isMoving):
         for robot in arena.movingRob:
             direction = robot[0].move()
             if (direction == 0):  # step right

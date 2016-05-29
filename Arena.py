@@ -1,7 +1,9 @@
 import random
 import Robot
 import copy
-import tkinter as tk
+import Tkinter as tk
+import simulator
+
 import time
 
 
@@ -20,10 +22,41 @@ class Arena:
         self.staticRob = []
         self.numOfStatics = 10
         self.numOfMoving=50
+
         self.root = tk.Tk()
         self.canvas = tk.Canvas(self.root, width=1000, height=1000)
+        for i in range(1000):
+            x = (i * 100)
+            self.canvas.create_line(x, 10, x, 0, width=2)
+            self.canvas.create_text(x, 20, text='%d' % (100 * i), anchor="n")
+        for i in range(10):
+            y = 1000 - (i * 100)
+            self.canvas.create_line(0, y, 10, y, width=2)
+            self.canvas.create_text(40, y, text='%5.1f' % (1000-(100 * i)), anchor="e")
+        self.MenuBar=tk.Menu(self.root)
+        self.men=tk.Menu(self.MenuBar,tearoff=0)
+        print(1)
+        self.men.add_command(label="Start",command=self.startMoving)
+        print(2)
+        self.men.add_command(label="Pause",command=self.pauseMoving)
+        print(3)
+        self.men.add_command(label="Save")
+        self.MenuBar.add_cascade(label="Test",menu=self.men)
+        #self.button = tk.Button(self.root, text="next step", command=self.save).place(x=20, y=20)
         self.canvas.pack()
         self.recRob=[]
+        self.root.config(menu=self.MenuBar)
+        self.isMoving=False
+        
+
+    def startMoving(self):
+        self.isMoving = True
+        print(self.isMoving)
+        simulator.moveRobot(self)
+    def pauseMoving(self):
+        self.isMoving = False
+        print(self.isMoving)
+
 
     def create_arena_from_file(self,fileName):
         i=0
