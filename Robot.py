@@ -84,6 +84,7 @@ class Robot():
             self.Y = self.guess[1]
             self.radius = self.radius / 2
 
+
     def create_table(self, guess):
         E=[]
         for index in self.indexOfNeighbors:
