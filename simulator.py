@@ -20,37 +20,50 @@ def moveRobot(arena):
             if (direction == 0):  # step right
                 if (arena.matrix[robot[1] + 1][robot[2]] == 0 or arena.matrix[robot[1] + 1][robot[2]] == 1):
                     arena.matrix[robot[1]][robot[2]] = robot[0].color
+                    robot[0].color = arena.matrix[robot[1] + 1][robot[2]]
                     arena.matrix[robot[1] + 1][robot[2]] = robot[0].id
                     robot[1] = robot[1] + 1
                     robot[0].X+=1
                     arena.canvas.move(robot[3], 1, 0)
                     arena.canvas.update()
-            if (direction == 1):  # step left
+            elif (direction == 1):  # step left
                 if (arena.matrix[robot[1] - 1][robot[2]] == 0 or arena.matrix[robot[1] - 1][robot[2]] == 1):
                     arena.matrix[robot[1]][robot[2]] = robot[0].color
+                    robot[0].color = arena.matrix[robot[1] - 1][robot[2]]
                     arena.matrix[robot[1] - 1][robot[2]] = robot[0].id
                     robot[1] = robot[1] - 1
                     robot[0].X -= 1
                     arena.canvas.move(robot[3], -1, 0)
                     arena.canvas.update()
-            if (direction == 2):  # step up
+            elif (direction == 2):  # step up
                 if (arena.matrix[robot[1]][robot[2] + 1] == 0 or arena.matrix[robot[1]][robot[2] + 1] == 1):
                     arena.matrix[robot[1]][robot[2]] = robot[0].color
+                    robot[0].color = arena.matrix[robot[1]][robot[2] + 1]
                     arena.matrix[robot[1]][robot[2] + 1] = robot[0].id
                     robot[2] = robot[2] + 1
                     robot[0].Y += 1
                     arena.canvas.move(robot[3], 0, 1)
                     arena.canvas.update()
-            if (direction == 3):  # step down
+            elif (direction == 3):  # step down
                 if (arena.matrix[robot[1]][robot[2] - 1] == 0 or arena.matrix[robot[1]][robot[2] - 1] == 1):
                     arena.matrix[robot[1]][robot[2]] = robot[0].color
+                    robot[0].color = arena.matrix[robot[1]][robot[2] - 1]
                     arena.matrix[robot[1]][robot[2] - 1] = robot[0].id
                     robot[2] = robot[2] - 1
                     robot[0].Y -= 1
                     arena.canvas.move(robot[3], 0, -1)
                     arena.canvas.update()
+
+
+            if int(robot[0].Battery.bat) == 20:
+                arena.canvas.itemconfig(robot[3], fill="green")
+            elif int(robot[0].Battery.bat) == 0:
+                arena.canvas.itemconfig(robot[3], fill="black")
+                robot[0].isDead = True
+            elif int(robot[0].Battery.bat) < 20 and robot[0].Battery.bat > 0 :
+                arena.canvas.itemconfig(robot[3], fill="orange")
+
         changeSend(arena)
-        time.sleep(0)
         print(arena.movingRob[0][1],arena.movingRob[0][2])
         print(arena.movingRob[0][0].guess)
         for index in arena.movingRob[0][0].indexOfNeighbors:

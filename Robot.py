@@ -13,6 +13,7 @@ class Robot():
         self.X = X
         self.Y = Y
         self.color = color
+        self.isDead = False
         self.Battery = Battery.Battery()
         self.sendMessage = False
         self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
@@ -21,11 +22,12 @@ class Robot():
         self.guess = [500,500]
 
     def send_message(self):
-        self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
-        if(self.isStatic):
-            self.sendMessage = True
-        elif(len(self.indexOfNeighbors)>3): # only if a moving robot already knows its location- it sends it to its neighbors
-            self.sendMessage = True
+        if not(self.isDead):
+            self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
+            if(self.isStatic):
+                self.sendMessage = True
+            elif(len(self.indexOfNeighbors)>3): # only if a moving robot already knows its location- it sends it to its neighbors
+                self.sendMessage = True
 
     def get_message(self):
         self.sendMessage = False
@@ -34,31 +36,34 @@ class Robot():
         self.guessTest()
 
     def move(self):
-        self.update_bat()
-        if(self.Battery.bat>50 or self.color==0): #randome move in the arena
-            return int(random.random()*4)
-        elif(self.color!=0): # low battery, search for neighbors in the light and move towards them
-            minIndex = -1
-            minDist = sys.maxsize
-            for index in self.indexOfNeighbors:
-                msg = self.allMessages[index]
-                if (msg[0][2]==0 and msg[1]<minDist):
-                    minDist = msg[1]
-                    minIndex = index
-            if(minIndex == -1): # if there are no neighbors in the light
-                return int(random.random() * 4)
-            else:
-                neighbor= self.allMessages[minIndex]
-                Xdiff=self.X-neighbor[0][3]
-                Ydiff=self.Y-neighbor[0][4]
-                if (Xdiff < 0):
-                    return 0
-                elif (Xdiff > 0):
-                    return 1
-                elif (Ydiff < 0):
-                    return 2
-                elif (Ydiff > 0):
-                    return 3
+        if not (self.isDead):
+            self.update_bat()
+            if(self.Battery.bat>50 or self.color == 0): #randome move in the arena
+                return int(random.random()*4)
+            elif(self.color!=0): # low battery, search for neighbors in the light and move towards them
+                minIndex = -1
+                minDist = sys.maxsize
+                for index in self.indexOfNeighbors:
+                    msg = self.allMessages[index]
+                    if (msg[0][2]==0 and msg[1]<minDist):
+                        minDist = msg[1]
+                        minIndex = index
+                if(minIndex == -1): # if there are no neighbors in the light
+                    return int(random.random() * 4)
+                else:
+                    neighbor= self.allMessages[minIndex]
+                    Xdiff=self.X-neighbor[0][3]
+                    Ydiff=self.Y-neighbor[0][4]
+                    if abs(Xdiff)>abs(Ydiff):
+                        if (Xdiff < 0):
+                            return 0
+                        elif (Xdiff > 0):
+                            return 1
+                    else:
+                        if (Ydiff < 0):
+                            return 2
+                        elif (Ydiff > 0):
+                            return 3
 
     def update_bat(self):
         if(self.color==0):

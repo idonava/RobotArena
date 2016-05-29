@@ -4,7 +4,6 @@ import copy
 import Tkinter as tk
 import simulator
 import tkMessageBox
-from pyscreenshot import grab
 
 class Arena:
 
@@ -39,7 +38,6 @@ class Arena:
         print(2)
         self.men.add_command(label="Pause",command=self.pauseMoving)
         print(3)
-        self.men.add_command(label="Save",command=self.savePic)
         self.MenuBar.add_cascade(label="Test",menu=self.men)
         #self.button = tk.Button(self.root, text="next step", command=self.save).place(x=20, y=20)
         self.recRob=[]
@@ -52,9 +50,7 @@ class Arena:
 
 
         self.root.state('zoomed')
-    def savePic(self):
-        im = grab(bbox=(0, 10, 1500, 2000))
-        im.show()
+
 
     def onObjectClick(self,event):
         item = self.canvas.find_closest(event.x, event.y)[0]
