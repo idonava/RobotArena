@@ -55,17 +55,6 @@ class Arena:
         item = self.canvas.find_closest(event.x, event.y)[0]
         tags = int(self.canvas.gettags(item)[0])
         print("ID: ", tags)
-        '''
-        if tags>self.numOfStatics-2:
-            print("static: ", self.numOfMoving)
-            print("static: ",self.numOfStatics)
-            robot=self.movingRob[tags-self.numOfStatics-2]
-        else:
-            print("static: ", self.numOfStatics)
-            print("static: ", self.numOfMoving)
-            robot=self.staticRob[tags-2]
-        print("mov",self.movingRob)
-        print("sta", self.staticRob) '''
         for rob in self.staticRob:
             if rob[0].id==tags:
                 robot=rob
@@ -74,7 +63,7 @@ class Arena:
             if rob[0].id == tags:
                 robot = rob
                 break
-        string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\nGuess position"+str(robot[0].X)+" "+str(robot[0].Y)
+        string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\n\nGuess position: "+str(robot[0].X)+" "+str(robot[0].Y)
         tkMessageBox.showinfo("Say Hello",string )
 
         print(event.widget.find_closest(event.x, event.y))
