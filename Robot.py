@@ -1,6 +1,6 @@
 import random
 import Battery
-import math
+import sys
 from numpy import *
 
 
@@ -10,9 +10,6 @@ class Robot():
         self.id = id
         self.numOfRobots = numOfRobots
         self.isStatic = isStatic
-        self.knowPos=False
-        if(isStatic):
-            self.knowPos=True
         self.X = X
         self.Y = Y
         self.color = color
@@ -24,21 +21,44 @@ class Robot():
         self.guess = [500,500]
 
     def send_message(self):
+        self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
         if(self.isStatic):
             self.sendMessage = True
-        elif(len(self.indexOfNeighbors)>3):
+        elif(len(self.indexOfNeighbors)>3): # only if a moving robot already knows its location- it sends it to its neighbors
             self.sendMessage = True
 
     def get_message(self):
         self.sendMessage = False
 
     def makeGuess(self):
-        if(len(self.indexOfNeighbors)>0):
-            self.guessTest()
+        self.guessTest()
 
     def move(self):
-        if(self.Battery.bat>0):
+        self.update_bat()
+        if(self.Battery.bat>50 or self.color==0): #randome move in the arena
             return int(random.random()*4)
+        elif(self.color!=0): # low battery, search for neighbors in the light and move towards them
+            minIndex = -1
+            minDist = sys.maxsize
+            for index in self.indexOfNeighbors:
+                msg = self.allMessages[index]
+                if (msg[0][2]==0 and msg[1]<minDist):
+                    minDist = msg[1]
+                    minIndex = index
+            if(minIndex == -1): # if there are no neighbors in the light
+                return int(random.random() * 4)
+            else:
+                neighbor= self.allMessages[minIndex]
+                Xdiff=self.X-neighbor[0][3]
+                Ydiff=self.Y-neighbor[0][4]
+                if (Xdiff < 0):
+                    return 0
+                elif (Xdiff > 0):
+                    return 1
+                elif (Ydiff < 0):
+                    return 2
+                elif (Ydiff > 0):
+                    return 3
 
     def update_bat(self):
         if(self.color==0):
@@ -47,7 +67,7 @@ class Robot():
             self.Battery.unCharge()
 
     def guessTest(self):
-        self.radius = 100
+        self.radius = 500
         while (self.radius > 1):
             testGuess = self.generateGuess()
             error = []
@@ -55,8 +75,8 @@ class Robot():
                 error.append(self.create_table(Gus))
             i = error.index(min(error))
             self.guess = testGuess[i]
-            self.X=self.guess[0]
-            self.Y= self.guess[1]
+            self.X = self.guess[0]
+            self.Y = self.guess[1]
             self.radius = self.radius / 2
 
     def create_table(self, guess):
@@ -68,7 +88,6 @@ class Robot():
             newDist = math.pow((newDist-realDist),2)
             E.append(newDist)
         return math.sqrt(sum(E)/len(E))
-
 
     def dist(self, x1, y1, x2, y2):
         return math.sqrt(math.pow(x1-x2,2)+ math.pow(y1-y2,2))

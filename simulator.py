@@ -50,7 +50,7 @@ def moveRobot(arena):
                     arena.canvas.move(robot[3], 0, -1)
                     arena.canvas.update()
         changeSend(arena)
-        time.sleep(0.01)
+        time.sleep(0)
         print(arena.movingRob[0][1],arena.movingRob[0][2])
         print(arena.movingRob[0][0].guess)
         for index in arena.movingRob[0][0].indexOfNeighbors:
@@ -107,11 +107,9 @@ def getDistance(reciveRobot,sendRobot):
     r2 = sendRobot[1]
     r3 = reciveRobot[2]
     r4 = sendRobot[2]
-    #print("r1: ",r1," r2 ", r2, " r3 ", r3, " r4 ",r4)
     dis = math.sqrt(math.pow(r1-r2,2)+ math.pow(r3-r4,2))
-    #print ("dis ",dis)
     rand = random.uniform(0.8,1.2)
-    return dis*rand
+    return dis
 
 if __name__ == "__main__":
     main()
