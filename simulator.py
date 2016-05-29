@@ -14,7 +14,7 @@ def main():
 
 
 def moveRobot(arena):
-    while(True):
+    while(arena.isMoving):
         for robot in arena.movingRob:
             direction = robot[0].move()
             if (direction == 0):  # step right
