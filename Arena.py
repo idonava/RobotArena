@@ -3,6 +3,7 @@ import Robot
 import copy
 import Tkinter as tk
 import simulator
+import tkMessageBox
 
 
 class Arena:
@@ -20,7 +21,7 @@ class Arena:
         self.staticRob = []
         self.numOfStatics = 10
         self.numOfMoving=50
-
+        self.robs=[]
         self.root = tk.Tk()
         self.canvas = tk.Canvas(self.root, width=1000, height=1000,scrollregion=(0, 0, 1050, 1050))
         for i in range(1000):
@@ -50,10 +51,33 @@ class Arena:
 
 
         self.root.state('zoomed')
+    def onObjectClick(self,event):
+        item = self.canvas.find_closest(event.x, event.y)[0]
+        tags = int(self.canvas.gettags(item)[0])
+        print("ID: ", tags)
+        '''
+        if tags>self.numOfStatics-2:
+            print("static: ", self.numOfMoving)
+            print("static: ",self.numOfStatics)
+            robot=self.movingRob[tags-self.numOfStatics-2]
+        else:
+            print("static: ", self.numOfStatics)
+            print("static: ", self.numOfMoving)
+            robot=self.staticRob[tags-2]
+        print("mov",self.movingRob)
+        print("sta", self.staticRob) '''
+        for rob in self.staticRob:
+            if rob[0].id==tags:
+                robot=rob
+                break
+        for rob in self.movingRob:
+            if rob[0].id == tags:
+                robot = rob
+                break
+        string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\nGuess position"+str(robot[0].X)+" "+str(robot[0].Y)
+        tkMessageBox.showinfo("Say Hello",string )
 
-
-
-
+        print(event.widget.find_closest(event.x, event.y))
 
 
 
@@ -85,7 +109,8 @@ class Arena:
                 list2=num.split(',')
                 rectangleList.append(int(list2[0]))
                 rectangleList.append(int(list2[1]))
-            self.canvas.create_rectangle(rectangleList[0],rectangleList[1],rectangleList[2],rectangleList[3], fill='black')
+            rect=self.canvas.create_rectangle(rectangleList[0],rectangleList[1],rectangleList[2],rectangleList[3], fill='black',tags='black')
+            self.canvas.tag_bind(rect, '<ButtonPress-1>', self.onObjectClick)
             for x in range(rectangleList[0],rectangleList[2]+1):
                 for y in range(rectangleList[1],rectangleList[3]+1):
                     self.matrix[x][y] = 2
@@ -160,14 +185,19 @@ class Arena:
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
                 r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY, self.numOfMoving+self.numOfStatics)
-                rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='red')
+                rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='red',tags=str(self.numOfRobots+2))
+                self.robs.append([rect,self.numOfRobots+2])
+                self.canvas.tag_bind(rect, '<ButtonPress-1>', self.onObjectClick)
                 self.staticRob.append([r,randX,randY,rect])
 
             else:
                 r = Robot.Robot(self.numOfRobots+2, isStatic, self.matrix[randX][randY], 0, 0,self.numOfMoving+self.numOfStatics)
-                rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='green')
+                rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='green',tags=str(self.numOfRobots+2))
+                self.robs.append([rect,self.numOfRobots+2])
+                self.canvas.tag_bind(rect, '<ButtonPress-1>', self.onObjectClick)
                 self.movingRob.append([r,randX,randY,rect])
             self.matrix[randX][randY] = r.id
+
 
 
 
