@@ -70,7 +70,8 @@ class Arena:
             string = "Actual Position: " + str(robot[1]) + " " + str(robot[2])
             tkMessageBox.showinfo("Static Robot ID: "+ str(tags), string)
         else:
-            string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\n\nGuess position: "+str(robot[0].X)+" "+str(robot[0].Y) +"\n\nBatery: "+str(robot[0].Battery.bat)+ "%"
+            string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\n\nGuess position: "+str(robot[0].X)+" "+str(
+                robot[0].Y) +"\n\nBatery: "+str(robot[0].Battery.bat)+ "%"
             tkMessageBox.showinfo("Moving Robot ID: "+str(tags),string )
 
         print(event.widget.find_closest(event.x, event.y))
