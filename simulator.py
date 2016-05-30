@@ -7,14 +7,14 @@ import GlobalParameters as GP
 def main():
     a = Arena.Arena()
     #a.create_random_arena()
-    a.create_arena_from_file("arena1.txt")
+    a.create_arena_from_file("arena2.txt")
     a.create_robots(a.numOfStatics, True)
     a.create_robots(a.numOfMoving, False)
     moveRobot(a)
     a.root.mainloop()
 
 
-def moveRobot(arena):
+def moveRobot(arena):                           #MoveRobot Function - Update the current location of the robot in the matrix and the canvas (UI)
     while(arena.isMoving):
         for robot in arena.movingRob:
             direction = robot[0].move()
@@ -66,7 +66,7 @@ def moveRobot(arena):
         sendMSG(arena)
 
 
-def sendMSG(arena):
+def sendMSG(arena):                         #Set if the robot is get or send mesage.
         for rob in arena.staticRob:
             rand =int(random.random()*2)
             if (rand ==0):
@@ -81,7 +81,7 @@ def sendMSG(arena):
                 rob[0].send_message()
         checkMessages(arena)
 
-def checkMessages(arena):
+def checkMessages(arena):               #Checking all the robot recived messages.
     sendRobots = []
     reciveRobots = []
     for rob in arena.staticRob:
@@ -97,20 +97,21 @@ def checkMessages(arena):
             reciveRobots.append(rob)
 
     for reciveRobot in reciveRobots:
-        minRobot = sendRobots[0]
-        minDis = getDistance(reciveRobot,minRobot)
-        for sendRobot in sendRobots:
-            dis = getDistance(reciveRobot,sendRobot)
-            if dis<minDis:
-                minRobot=sendRobot
-                minDis = dis
-        if (minDis<500):
-            reciveRobot[0].allMessages[minRobot[0].id]=([minRobot[0].message,minDis])
-            if(minRobot[0].id not in reciveRobot[0].indexOfNeighbors):
-                reciveRobot[0].indexOfNeighbors.append(minRobot[0].id)
-            reciveRobot[0].updateGuess()
+        if (len(sendRobots)!=0):
+            minRobot = sendRobots[0]
+            minDis = getDistance(reciveRobot,minRobot)
+            for sendRobot in sendRobots:
+                dis = getDistance(reciveRobot,sendRobot)
+                if dis<minDis:
+                    minRobot=sendRobot
+                    minDis = dis
+            if (minDis<500):
+                reciveRobot[0].allMessages[minRobot[0].id]=([minRobot[0].message,minDis])
+                if(minRobot[0].id not in reciveRobot[0].indexOfNeighbors):
+                    reciveRobot[0].indexOfNeighbors.append(minRobot[0].id)
+                reciveRobot[0].updateGuess()
 
-def getDistance(reciveRobot,sendRobot):
+def getDistance(reciveRobot,sendRobot):             #Checking the distance between the robots.
     r1 = reciveRobot[1]
     r2 = sendRobot[1]
     r3 = reciveRobot[2]

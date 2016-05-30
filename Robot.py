@@ -22,7 +22,13 @@ class Robot():
         self.allMessages = [None]*(self.numOfRobots+3)
         self.indexOfNeighbors=[]                                #help list- in order not to look for the entire allMessage list- we look only for the index we got message from
         self.guess = GP.initialGuess                            #init guess
-
+        self.MovingType = self.rationalMoving()                 #True if the robot have rational moving.
+    def rationalMoving(self):
+        rand = int(random.random()*100)+1
+        if (rand<=GP.percentOfRationalRobots):
+            return True
+        else:
+            return False
     def send_message(self):                                     #this message activates the senMessage flag
         if not(self.isDead):                                    #make sure the robot has battery before he can send a message
             self.message = [self.id, self.isStatic, self.color, self.X, self.Y]
@@ -38,31 +44,36 @@ class Robot():
         if not (self.isDead):
             self.update_bat()
             if(self.color == 0):                                #random move in the arena
-                return int(random.random()*4)
-            else:                                               # low battery, search for neighbors in the light and move towards them
-                minIndex = -1
-                minDist = sys.maxsize
-                for index in self.indexOfNeighbors:
-                    msg = self.allMessages[index]
-                    if (msg[0][2]==0 and msg[1]<minDist):
-                        minDist = msg[1]
-                        minIndex = index
-                if(minIndex == -1):                             # if there are no neighbors in the light- move random
-                    return int(random.random() * 4)
+                if (self.MovingType):
+                    return self.doRationalMove()
                 else:
-                    neighbor= self.allMessages[minIndex]
-                    Xdiff=self.X-neighbor[0][3]
-                    Ydiff=self.Y-neighbor[0][4]
-                    if abs(Xdiff)>abs(Ydiff):
-                        if (Xdiff < 0):
-                            return 0
-                        elif (Xdiff > 0):
-                            return 1
-                    else:
-                        if (Ydiff < 0):
-                            return 2
-                        elif (Ydiff > 0):
-                            return 3
+                    return int(random.random()*4)
+            else:                                               # low battery, search for neighbors in the light and move towards them
+                return self.doRationalMove()
+    def doRationalMove(self):                                   # Moving to the closet neighbor are in white area.
+        minIndex = -1
+        minDist = sys.maxsize
+        for index in self.indexOfNeighbors:
+            msg = self.allMessages[index]
+            if (msg[0][2] == 0 and msg[1] < minDist):
+                minDist = msg[1]
+                minIndex = index
+        if (minIndex == -1):  # if there are no neighbors in the light- move random
+            return int(random.random() * 4)
+        else:
+            neighbor = self.allMessages[minIndex]
+            Xdiff = self.X - neighbor[0][3]
+            Ydiff = self.Y - neighbor[0][4]
+            if abs(Xdiff) > abs(Ydiff):
+                if (Xdiff < 0):
+                    return 0
+                elif (Xdiff > 0):
+                    return 1
+            else:
+                if (Ydiff < 0):
+                    return 2
+                elif (Ydiff > 0):
+                    return 3
 
     def update_bat(self):                                       #update current battery state- activates every time the robot is moving\sends a message
         if(self.color==0):
@@ -80,8 +91,8 @@ class Robot():
                 error.append(self.RMS(Gus))
             i = error.index(min(error))                         #check which error is the lowest (==better)
             self.guess = testGuess[i]                           #update the current guess to be the best of this iteration
-            self.X = self.guess[0]
-            self.Y = self.guess[1]
+            self.X = abs(self.guess[0])
+            self.Y = abs(self.guess[1])
             self.radius = self.radius / 2
 
     def RMS(self, guess):                                       #RMS algorithem

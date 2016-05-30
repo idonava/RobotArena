@@ -9,7 +9,7 @@ import GlobalParameters as GP
 
 class Arena:
 
-    def __init__(self):
+    def __init__(self):     #Constractur
         self.numOfRobots=0
         self.id = id
         self.X = GP.arenaX
@@ -26,7 +26,7 @@ class Arena:
         self.configCanvas()
         self.root.state('zoomed')
 
-    def configCanvas(self):
+    def configCanvas(self):     #Initial the canvas.
         self.canvas = tk.Canvas(self.root, width=1000, height=1000, scrollregion=(0, 0, 1050, 1050))
         self.addMenus()
         self.addScroll()
@@ -37,7 +37,7 @@ class Arena:
         self.vbar.pack(side='right', fill='y')
         self.vbar.config(command=self.canvas.yview)
 
-    def addMenus(self):
+    def addMenus(self):         #Add menu to the program.
         for i in range(11):
             x = (i * 100)
             self.canvas.create_line(x, 10, x, 0, width=2)
@@ -54,7 +54,7 @@ class Arena:
         self.root.config(menu=self.MenuBar)
 
 
-    def onObjectClick(self,event):
+    def onObjectClick(self,event):      #Add information when clicked on robot.
         item = self.canvas.find_closest(event.x, event.y)[0]
         tags = int(self.canvas.gettags(item)[0])
         print("ID: ", tags)
@@ -78,14 +78,14 @@ class Arena:
 
 
 
-    def startMoving(self):
+    def startMoving(self):      #Start the moving in the GUI.
         self.isMoving = True
         simulator.moveRobot(self)
 
-    def pauseMoving(self):
+    def pauseMoving(self):   # Stop the moving in the GUI.
         self.isMoving = False
 
-    def create_arena_from_file(self,fileName):
+    def create_arena_from_file(self,fileName):  #Read the incoming file and create the robots arena
         i=0
         with open (fileName,'r') as f:
             lines=f.readlines()
@@ -130,7 +130,7 @@ class Arena:
         self.numOfMoving = int(lines[i].split('=',1)[1])
         self.matrixWithoutRobots=copy.deepcopy(self.matrix)
 
-    def create_boundaries(self):
+    def create_boundaries(self):            #Create the boundaries from the incoming file.
         self.matrix = [[GP.white for x in range(self.X)] for y in range(self.Y)]
         for x in range(self.X):
             self.matrix[x][self.Y - 1] = GP.black
@@ -139,7 +139,7 @@ class Arena:
             self.matrix[self.X - 1][y] = GP.black
             self.matrix[0][y] = GP.black
 
-    def create_random_arena(self):
+    def create_random_arena(self):       #Create random arena.
         self.create_boundaries()
         #create gray areas:
         for x in range(3):
@@ -166,7 +166,7 @@ class Arena:
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
                     self.matrix[x][y] = GP.black
 
-    def create_robots(self,num,isStatic):
+    def create_robots(self,num,isStatic):   #Create the robots.
         for x in range(num):
             self.numOfRobots=self.numOfRobots+1
             randX=0

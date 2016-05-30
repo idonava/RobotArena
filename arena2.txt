@@ -4,8 +4,8 @@ black areas : 1
 200,700->420,750
 gray areas : 4
 100,100->300,350
-720,400->800,600
-600,100->620,140
+400,400->800,600
+600,100->800,350
 100,200->180,220
-num of static robots = 10
-num of moving robots = 100
+num of static robots = 70
+num of moving robots = 70
