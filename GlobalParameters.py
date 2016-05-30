@@ -18,4 +18,4 @@ moveLeft = 1
 moveUp = 2
 moveDown = 3
 rand = random.uniform(0.8,1.2)
-percentOfRationalRobots = 80  #in percent (0-100%)
+percentOfRationalRobots = 30  #in percent (0-100%)
