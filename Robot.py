@@ -7,6 +7,7 @@ import GlobalParameters as GP
 
 class Robot():
 
+
     def __init__(self, id, isStatic,color,X,Y, numOfRobots):
         self.id = id
         self.numOfRobots = numOfRobots                          #number of all the robots in the arena- need to know in order to recieve messages from them

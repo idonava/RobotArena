@@ -3,6 +3,7 @@ import GlobalParameters as GP
 
 class Battery:
 
+
     def __init__(self):
         self.bat=float(GP.batteryFull)
 

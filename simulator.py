@@ -118,6 +118,7 @@ def getDistance(reciveRobot,sendRobot):
     dis = math.sqrt(math.pow(r1-r2,2)+ math.pow(r3-r4,2))
     return dis * GP.rand
 
+
 if __name__ == "__main__":
     main()
 

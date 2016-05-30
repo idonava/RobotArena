@@ -53,6 +53,7 @@ class Arena:
         self.MenuBar.add_cascade(label="Test", menu=self.men)
         self.root.config(menu=self.MenuBar)
 
+
     def onObjectClick(self,event):
         item = self.canvas.find_closest(event.x, event.y)[0]
         tags = int(self.canvas.gettags(item)[0])
