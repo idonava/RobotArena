@@ -20,36 +20,38 @@ class Arena:
         self.numOfStatics = GP.numOfStatic
         self.numOfMoving = GP.numOMoving
         self.robs=[]
+        self.recRob = []
+        self.isMoving = False
         self.root = tk.Tk()
-        self.canvas = tk.Canvas(self.root, width=1000, height=1000,scrollregion=(0, 0, 1050, 1050))
-        for i in range(1000):
+        self.configCanvas()
+        self.root.state('zoomed')
+
+    def configCanvas(self):
+        self.canvas = tk.Canvas(self.root, width=1000, height=1000, scrollregion=(0, 0, 1050, 1050))
+        self.addMenus()
+        self.addScroll()
+        self.canvas.pack(side='left', expand='True', fill='both')
+
+    def addScroll(self):
+        self.vbar = tk.Scrollbar(self.canvas, orient='vertical')
+        self.vbar.pack(side='right', fill='y')
+        self.vbar.config(command=self.canvas.yview)
+
+    def addMenus(self):
+        for i in range(11):
             x = (i * 100)
             self.canvas.create_line(x, 10, x, 0, width=2)
             self.canvas.create_text(x, 20, text='%d' % (100 * i), anchor="n")
         for i in range(10):
             y = 1000 - (i * 100)
             self.canvas.create_line(0, y, 10, y, width=2)
-            self.canvas.create_text(40, y, text='%5.1f' % (1000-(100 * i)), anchor="e")
-        self.MenuBar=tk.Menu(self.root)
-        self.men=tk.Menu(self.MenuBar,tearoff=0)
-        print(1)
-        self.men.add_command(label="Start",command=self.startMoving)
-        print(2)
-        self.men.add_command(label="Pause",command=self.pauseMoving)
-        print(3)
-        self.MenuBar.add_cascade(label="Test",menu=self.men)
-        #self.button = tk.Button(self.root, text="next step", command=self.save).place(x=20, y=20)
-        self.recRob=[]
-        self.vbar = tk.Scrollbar(self.canvas, orient='vertical')
-        self.vbar.pack(side='right', fill='y')
-        self.vbar.config(command=self.canvas.yview)
+            self.canvas.create_text(40, y, text='%5.1f' % (1000 - (100 * i)), anchor="e")
+        self.MenuBar = tk.Menu(self.root)
+        self.men = tk.Menu(self.MenuBar, tearoff=0)
+        self.men.add_command(label="Start", command=self.startMoving)
+        self.men.add_command(label="Pause", command=self.pauseMoving)
+        self.MenuBar.add_cascade(label="Test", menu=self.men)
         self.root.config(menu=self.MenuBar)
-        self.canvas.pack(side='left', expand='True', fill='both')
-        self.isMoving=False
-
-
-        self.root.state('zoomed')
-
 
     def onObjectClick(self,event):
         item = self.canvas.find_closest(event.x, event.y)[0]
@@ -63,8 +65,13 @@ class Arena:
             if rob[0].id == tags:
                 robot = rob
                 break
-        string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\n\nGuess position: "+str(robot[0].X)+" "+str(robot[0].Y) +"\n\nBatery: "+str(robot[0].Battery.bat)+ "%"
-        tkMessageBox.showinfo("Robot information",string )
+        if robot[0].isStatic:
+            string = "Actual Position: " + str(robot[1]) + " " + str(robot[2])
+            tkMessageBox.showinfo("Static Robot ID: "+ str(tags), string)
+        else:
+            string="Actual Position: "+str(robot[1])+" "+str(robot[2])+"\n\nGuess position: "+str(robot[0].X)+" "+str(
+                robot[0].Y) +"\n\nBatery: "+str(robot[0].Battery.bat)+ "%"
+            tkMessageBox.showinfo("Moving Robot ID: "+str(tags),string )
 
         print(event.widget.find_closest(event.x, event.y))
 
