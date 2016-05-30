@@ -4,22 +4,21 @@ import copy
 import Tkinter as tk
 import simulator
 import tkMessageBox
+import GlobalParameters as GP
+
 
 class Arena:
 
-    ''' white=0, gray=1, black=2'''
-
     def __init__(self):
-        global white, gray, black
         self.numOfRobots=0
         self.id = id
-        self.X = 1000
-        self.Y = 1000
-        self.matrix=[[0 for x in range(self.X)]for y in range(self.Y)]
+        self.X = GP.arenaX
+        self.Y = GP.arenaY
+        self.matrix=[[GP.white for x in range(self.X)]for y in range(self.Y)]
         self.movingRob = []
         self.staticRob = []
-        self.numOfStatics = 10
-        self.numOfMoving=50
+        self.numOfStatics = GP.numOfStatic
+        self.numOfMoving = GP.numOMoving
         self.robs=[]
         self.root = tk.Tk()
         self.canvas = tk.Canvas(self.root, width=1000, height=1000,scrollregion=(0, 0, 1050, 1050))
@@ -73,12 +72,10 @@ class Arena:
 
     def startMoving(self):
         self.isMoving = True
-        print(self.isMoving)
         simulator.moveRobot(self)
 
     def pauseMoving(self):
         self.isMoving = False
-        print(self.isMoving)
 
     def create_arena_from_file(self,fileName):
         i=0
@@ -126,13 +123,13 @@ class Arena:
         self.matrixWithoutRobots=copy.deepcopy(self.matrix)
 
     def create_boundaries(self):
-        self.matrix = [[0 for x in range(self.X)] for y in range(self.Y)]
+        self.matrix = [[GP.white for x in range(self.X)] for y in range(self.Y)]
         for x in range(self.X):
-            self.matrix[x][self.Y - 1] = 2
-            self.matrix[x][0] = 2
+            self.matrix[x][self.Y - 1] = GP.black
+            self.matrix[x][0] = GP.black
         for y in range(self.Y):
-            self.matrix[self.X - 1][y] = 2
-            self.matrix[0][y] = 2
+            self.matrix[self.X - 1][y] = GP.black
+            self.matrix[0][y] = GP.black
 
     def create_random_arena(self):
         self.create_boundaries()
@@ -146,7 +143,7 @@ class Arena:
             self.canvas.create_rectangle(int(min(rand1, rand2)), int(min(rand3, rand4)), int(max(rand1, rand2)),int(max(rand3, rand4)),fill='gray')
             for x in range(int(min(rand1, rand2)), int(max(rand1, rand2))):
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
-                    self.matrix[x][y] = 1
+                    self.matrix[x][y] = GP.gray
 
 
         # create black areas:
@@ -159,18 +156,14 @@ class Arena:
             self.canvas.create_rectangle(int(min(rand1, rand2)), int(min(rand3, rand4)), int(max(rand1, rand2)),int(max(rand3, rand4)),fill='black')
             for x in range(int(min(rand1, rand2)),int(max(rand1, rand2))):
                 for y in range(int(min(rand3, rand4)), int(max(rand3, rand4))):
-                    self.matrix[x][y] = 2
-
-    def print_arena(self):
-        for x in range(self.X):
-            print (self.matrix[x])
+                    self.matrix[x][y] = GP.black
 
     def create_robots(self,num,isStatic):
         for x in range(num):
             self.numOfRobots=self.numOfRobots+1
             randX=0
             randY=0
-            while(self.matrix[randX][randY]==2): #make sure we wont put any robot on a black spot
+            while(self.matrix[randX][randY]==GP.black): #make sure we wont put any robot on a black spot
                 randX = int((random.random() * (self.X - 1)) + 1)
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
