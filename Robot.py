@@ -23,6 +23,7 @@ class Robot():
         self.indexOfNeighbors=[]                                #help list- in order not to look for the entire allMessage list- we look only for the index we got message from
         self.guess = GP.initialGuess                            #init guess
         self.MovingType = self.rationalMoving()                 #True if the robot have rational moving.
+        self.closeRobot=2
     def rationalMoving(self):
         rand = int(random.random()*100)+1
         if (rand<=GP.percentOfRationalRobots):
@@ -64,6 +65,7 @@ class Robot():
             neighbor = self.allMessages[minIndex]
             Xdiff = self.X - neighbor[0][3]
             Ydiff = self.Y - neighbor[0][4]
+            self.closeRobot = neighbor
             if abs(Xdiff) > abs(Ydiff):
                 if (Xdiff < 0):
                     return 0

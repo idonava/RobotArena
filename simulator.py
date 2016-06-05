@@ -42,7 +42,7 @@ def moveRobot(arena):                           #MoveRobot Function - Update the
                     robot[0].color = arena.matrix[robot[1]][robot[2] + 1]
                     arena.matrix[robot[1]][robot[2] + 1] = robot[0].id
                     robot[2] = robot[2] + 1
-                    robot[0].Y += 1
+                    robot[0].Y -= 1
                     arena.canvas.move(robot[3], 0, 1)
                     arena.canvas.update()
             elif (direction == GP.moveDown):  # step down
@@ -51,7 +51,7 @@ def moveRobot(arena):                           #MoveRobot Function - Update the
                     robot[0].color = arena.matrix[robot[1]][robot[2] - 1]
                     arena.matrix[robot[1]][robot[2] - 1] = robot[0].id
                     robot[2] = robot[2] - 1
-                    robot[0].Y -= 1
+                    robot[0].Y += 1
                     arena.canvas.move(robot[3], 0, -1)
                     arena.canvas.update()
 
