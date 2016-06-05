@@ -23,13 +23,10 @@ class Robot():
         self.indexOfNeighbors=[]                                #help list- in order not to look for the entire allMessage list- we look only for the index we got message from
         self.guess = GP.initialGuess                            #init guess
         self.MovingType = self.rationalMoving()                 #True if the robot have rational moving.
-        self.closeRobot=2
+        self.closeRobot = -1
         self.isWhite= False
         self.lastStep=5
-        self.closeRobot = -1
         self.direction = -1
-
-
 
     def rationalMoving(self):
         rand = int(random.random()*100)+1
@@ -52,6 +49,7 @@ class Robot():
         if not (self.isDead):
             self.update_bat()
             if(self.color == 0):                                #random move in the arena
+                self.direction = -1
                 self.isWhite=True
                 if (self.MovingType):
                     self.lastStep=self.doRationalMove()
