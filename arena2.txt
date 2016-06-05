@@ -8,4 +8,4 @@ gray areas : 4
 600,100->800,350
 100,200->180,220
 num of static robots = 100
-num of moving robots = 50
+num of moving robots = 100
