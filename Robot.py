@@ -26,6 +26,11 @@ class Robot():
         self.closeRobot=2
         self.isWhite= False
         self.lastStep=5
+        self.closeRobot = -1
+        self.direction = -1
+
+
+
     def rationalMoving(self):
         rand = int(random.random()*100)+1
         if (rand<=GP.percentOfRationalRobots):
@@ -77,22 +82,26 @@ class Robot():
             if (msg[0][2] == 0 and msg[1] < minDist):
                 minDist = msg[1]
                 minIndex = index
-        if (minIndex == -1):  # if there are no neighbors in the light- move random
-            return int(random.random() * 4)
+
+        if (minIndex == -1 or self.direction != -1):                                    # if there are no neighbors in the light- move random
+            rand = int(random.random() * 4)
+            if(self.direction == -1):
+                self.direction = rand
+                return rand
+            else:
+                return self.direction
         else:
             neighbor = self.allMessages[minIndex]
             Xdiff = self.X - neighbor[0][3]
             Ydiff = self.Y - neighbor[0][4]
             self.closeRobot = neighbor
-            if abs(Xdiff) > abs(Ydiff):
-                if (Xdiff < 0):
-                    return 0
-                elif (Xdiff > 0):
-                    return 1
-            else:
-                if (Ydiff < 0):
-                    return 2
-                elif (Ydiff > 0):
+            if (Xdiff < 0):
+                return 0
+            elif (Xdiff > 0):
+                return 1
+            elif (Ydiff < 0):
+                return 2
+            elif (Ydiff > 0):
                     return 3
 
     def update_bat(self):                                       #update current battery state- activates every time the robot is moving\sends a message
