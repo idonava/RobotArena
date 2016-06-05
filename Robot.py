@@ -88,6 +88,7 @@ class Robot():
                 return rand
             else:
                 return self.direction
+
         else:
             neighbor = self.allMessages[minIndex]
             Xdiff = self.X - neighbor[0][3]
