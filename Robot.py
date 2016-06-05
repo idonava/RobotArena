@@ -24,9 +24,8 @@ class Robot():
         self.guess = GP.initialGuess                            #init guess
         self.MovingType = self.rationalMoving()                 #True if the robot have rational moving.
         self.closeRobot=2
-
-
-
+        self.isWhite= False
+        self.lastStep=5
     def rationalMoving(self):
         rand = int(random.random()*100)+1
         if (rand<=GP.percentOfRationalRobots):
@@ -48,12 +47,28 @@ class Robot():
         if not (self.isDead):
             self.update_bat()
             if(self.color == 0):                                #random move in the arena
+                self.isWhite=True
                 if (self.MovingType):
-                    return self.doRationalMove()
+                    self.lastStep=self.doRationalMove()
+                    return self.lastStep
                 else:
-                    return int(random.random()*4)
+                    self.lastStep=int(random.random()*4)
+                    return self.lastStep
             else:                                               # low battery, search for neighbors in the light and move towards them
-                return self.doRationalMove()
+                if(self.isWhite):
+                    return self.outOfGray()
+                else:
+                    self.lastStep = self.doRationalMove()
+                    return self.lastStep
+    def outOfGray(self):
+        if(self.lastStep==0):
+            return 1
+        elif(self.lastStep == 1):
+            return 0
+        elif (self.lastStep == 2):
+            return 3
+        elif (self.lastStep == 3):
+            return 2
     def doRationalMove(self):                                   # Moving to the closet neighbor are in white area.
         minIndex = -1
         minDist = sys.maxsize
