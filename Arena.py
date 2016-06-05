@@ -176,6 +176,7 @@ class Arena:
                 randY = int((random.random() * (self.Y - 1)) + 1)
             if(isStatic):
                 r = Robot.Robot(self.numOfRobots+2,isStatic,self.matrix[randX][randY],randX,randY, self.numOfMoving+self.numOfStatics)
+                r.guess=[randX,randY]
                 rect=self.canvas.create_rectangle(randX, randY, randX + 5, randY + 5, fill='red',tags=str(self.numOfRobots+2))
                 self.robs.append([rect,self.numOfRobots+2])
                 self.canvas.tag_bind(rect, '<ButtonPress-1>', self.onObjectClick)

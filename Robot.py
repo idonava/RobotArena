@@ -24,6 +24,9 @@ class Robot():
         self.guess = GP.initialGuess                            #init guess
         self.MovingType = self.rationalMoving()                 #True if the robot have rational moving.
         self.closeRobot=2
+
+
+
     def rationalMoving(self):
         rand = int(random.random()*100)+1
         if (rand<=GP.percentOfRationalRobots):

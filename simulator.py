@@ -109,7 +109,8 @@ def checkMessages(arena):               #Checking all the robot recived messages
                 reciveRobot[0].allMessages[minRobot[0].id]=([minRobot[0].message,minDis])
                 if(minRobot[0].id not in reciveRobot[0].indexOfNeighbors):
                     reciveRobot[0].indexOfNeighbors.append(minRobot[0].id)
-                reciveRobot[0].updateGuess()
+                if not(reciveRobot[0].isStatic):
+                    reciveRobot[0].updateGuess()
 
 def getDistance(reciveRobot,sendRobot):             #Checking the distance between the robots.
     r1 = reciveRobot[1]
