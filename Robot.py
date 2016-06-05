@@ -81,7 +81,7 @@ class Robot():
                 minDist = msg[1]
                 minIndex = index
 
-        if (minIndex == -1 or self.direction != -1):                                    # if there are no neighbors in the light- move random
+        if (minIndex == -1 ):                                    # if there are no neighbors in the light- move random
             rand = int(random.random() * 4)
             if(self.direction == -1):
                 self.direction = rand
