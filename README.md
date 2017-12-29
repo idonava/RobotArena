@@ -44,3 +44,4 @@ Main
 2. Creates the robots.
 3. Move the robots in the arena.
 
+![](https://github.com/idonava/matala3/blob/master/img.png)
